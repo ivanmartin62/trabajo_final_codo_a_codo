@@ -10,9 +10,9 @@ public class UsuarioDAO {
     }
     
     public ResultSet validarUsuario(String email, String password){
-        String sql = "SELECT * FROM usuario WHERE email = ? AND contraseña = ?";
+        String sql = "SELECT * FROM usuario WHERE (email = ? OR nombre_usuario = ?) AND contraseña = ?";
         String hashed = hashPassword(password);
-        return conexion.consultaSQL(sql, email, hashed);
+        return conexion.consultaSQL(sql, email, email, hashed);
     }
     
     public void cerrar(){
