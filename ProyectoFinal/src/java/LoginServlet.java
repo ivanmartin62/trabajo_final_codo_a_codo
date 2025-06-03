@@ -19,10 +19,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            Coneccion base = new Coneccion();
-            ResultSet rs = base.consultaSQL("select * from usuario where email ="
-                    + "'" +  request.getParameter("inputEmail") +  "'" + " and contraseña = "
-                    + "'" +  request.getParameter("inputPassword") +  "'" );
+            UsuarioDAO dao = new UsuarioDAO();
+            ResultSet rs = dao.validarUsuario(request.getParameter("inputEmail"),
+                                             request.getParameter("inputPassword"));
            if (rs.next()) {
     // Usuario y contraseña correctos
     out.println("<!DOCTYPE html>");
@@ -51,7 +50,8 @@ public class LoginServlet extends HttpServlet {
     out.println("</body>");
     out.println("</html>");
         }
-            
+        dao.cerrar();
+
         }
     }
     @Override

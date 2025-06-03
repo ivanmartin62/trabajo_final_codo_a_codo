@@ -49,16 +49,39 @@ public class Coneccion {
     
     
     public ResultSet consultaSQL(String busqueda){
-        
+
         try {
             ps= conectarse().prepareStatement(busqueda);
         rs=ps.executeQuery();
-        
-        
+
+
          } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
+    }
+
+    public ResultSet consultaSQL(String busqueda, String... params){
+        try {
+            ps = conectarse().prepareStatement(busqueda);
+            for(int i=0; i<params.length; i++){
+                ps.setString(i+1, params[i]);
+            }
+            rs = ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+
+    public void cerrar(){
+        try {
+            if(rs != null) rs.close();
+            if(ps != null) ps.close();
+            if(cn != null) cn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
